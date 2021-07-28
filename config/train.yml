@@ -1,0 +1,74 @@
+log_file: train.txt
+save_model: models/train
+tensorboard_log_dir: models/onmt
+tensorboard: 'true'
+
+# gate
+selective_gate: 'false'
+
+seed: 20200510
+
+# optim
+optim: adam
+learning_rate: 0.001
+max_grad_norm: 2
+
+# learning rate decay
+start_decay_steps: 2000
+decay_steps: 1000
+learning_rate_decay: 0.5
+
+# embedding
+pre_word_vecs_enc: data/samsum_embeddings.enc.pt
+pre_word_vecs_dec: data/samsum_embeddings.dec.pt
+
+# data
+data: data/samsum
+save_checkpoint_steps: 500
+keep_checkpoint: -1
+
+# train
+batch_size: 32
+valid_batch_size: 32
+train_steps: 1000000
+valid_steps: 500
+report_every: 500
+apex_opt_level: O0
+
+# model
+## encoder
+# param_init
+encoder_type: hier
+rnn_size: 300
+dropout: 0.5
+share_embeddings: 'true'
+
+## node encoder
+node_encoder: brnn
+rnn_type: LSTM
+word_vec_size: 100
+layers: 1
+
+## graph encoder
+graph_encoder: hgt
+graph_in_dim: 200
+graph_heads: 8
+graph_layers: 1
+graph_dropout: 0.5
+num_node_types: 4
+num_edge_types: 3
+
+# decoder
+attention_dropout: 0.5
+decoder_type: rnn
+
+# copy and attention
+copy_attn: 'true'
+global_attention: mlp
+reuse_copy_attn: 'true'
+copy_loss_by_seqlength: 'true'
+
+# GPU
+world_size: 1
+gpu_ranks:
+  - 0
